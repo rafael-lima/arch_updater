@@ -1,0 +1,40 @@
+#!/bin/bash
+
+updates_verify() {
+	pm_updates=$(pacman -Qu)
+	aur_updates=$(yaourt -Qua)
+	updates="$pm_updates""$aur_updates"
+}
+
+sudo pacman -Syy
+updates_verify
+
+if [[ -n "$updates" ]]; then
+	if [[ -n "$pm_updates" ]]; then
+		echo -e "\n:: Current updates:"
+		echo -e "\n$pm_updates\n"
+		sudo pacman -Su
+		updates_verify
+	fi
+
+	if [[ -n "$aur_updates" ]]; then
+		echo -e "\n:: Initializing the updating of AUR packages...\n"
+		yaourt -Sua
+		updates_verify
+	fi
+
+	if [[ -z "$updates" ]]; then
+		echo -e "\n:: Removing the old packages of cache...\n"
+		sudo pacman -Sc
+		else
+			echo -e "\nUpdates not completed."
+			exit 1
+	fi
+
+	echo -e "\nThe Arch's updating was completed."
+
+	else
+		echo -e "\nNo news updates, Arch Linux is updated."
+fi
+
+exit
