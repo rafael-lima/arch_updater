@@ -28,7 +28,7 @@ if [[ -n "$updates" ]]; then
 		sudo pacman -Sc
 		else
 			echo -e "\nUpdates not completed."
-			exit 1
+			exit
 	fi
 
 	echo -e "\nThe Arch's updating was completed."
