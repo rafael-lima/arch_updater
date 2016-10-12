@@ -2,7 +2,7 @@
 
 updates_verify() {
 	pm_updates=$(pacman -Qu)
-	aur_updates=$(yaourt -Qua)
+	aur_updates=$(yaourt -Qua | grep aur)
 	updates="$pm_updates""$aur_updates"
 }
 
@@ -14,14 +14,14 @@ if [[ -n "$updates" ]]; then
 		echo -e "\n:: Current updates:"
 		echo -e "\n$pm_updates\n"
 		sudo pacman -Su
-		updates_verify
 	fi
 
 	if [[ -n "$aur_updates" ]]; then
 		echo -e "\n:: Initializing the updating of AUR packages...\n"
 		yaourt -Sua
-		updates_verify
 	fi
+
+	updates_verify
 
 	if [[ -z "$updates" ]]; then
 		echo -e "\n:: Removing the old packages of cache...\n"
